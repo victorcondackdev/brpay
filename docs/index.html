@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Decodifique Pix copia e cola, boletos, CPF/CNPJ e chaves Pix direto no navegador. Nada sai do seu computador.">
+  <title>brpay playground: Pix, boleto, CPF/CNPJ</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <h1>brpay <span class="muted">playground</span></h1>
+      <p class="lede">Cole um código e veja o que ele contém. A decodificação roda em WebAssembly, no seu navegador: nada é enviado a servidor algum.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section aria-labelledby="decode-title">
+      <h2 id="decode-title" class="visually-hidden">Decodificar</h2>
+      <label for="input" class="label">Entrada</label>
+      <textarea id="input" rows="4" spellcheck="false" autocomplete="off" autocapitalize="off"
+        placeholder="Cole um Pix copia e cola, linha digitável, código de barras, CPF/CNPJ…" disabled></textarea>
+      <div class="examples">
+        <span class="muted">Exemplos:</span>
+        <button type="button" class="link" data-example="pix">Pix</button>
+        <button type="button" class="link" data-example="boleto">Boleto</button>
+        <button type="button" class="link" data-example="typo">Boleto com erro de digitação</button>
+        <button type="button" class="link" data-example="broken">Pix com CRC errado</button>
+        <button type="button" class="link" data-example="cnpj">CNPJ alfanumérico</button>
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite">Carregando o decodificador…</div>
+
+      <div id="result" class="card" hidden>
+        <div class="card-head">
+          <span id="kind" class="badge"></span>
+          <span id="verdict" class="verdict"></span>
+        </div>
+        <p id="error" class="error" hidden></p>
+        <table id="fields" class="fields"><tbody></tbody></table>
+        <div id="issues-box" hidden>
+          <h3>Problemas encontrados</h3>
+          <ul id="issues" class="issues"></ul>
+        </div>
+        <div id="suggestions-box" hidden>
+          <h3>Você quis dizer…</h3>
+          <p class="muted small">Um dígito parece ter sido digitado errado. Estas linhas passam em todos os dígitos verificadores; confira com o boleto impresso.</p>
+          <ul id="suggestions" class="suggestions"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="static-title">
+      <h2 id="static-title">Gerar Pix estático</h2>
+      <form id="static-form" class="grid" autocomplete="off">
+        <label>Chave Pix <input name="key" required placeholder="CPF, CNPJ, e-mail, +55… ou chave aleatória"></label>
+        <label>Nome do recebedor <input name="name" required maxlength="25" placeholder="Até 25 caracteres"></label>
+        <label>Cidade <input name="city" required maxlength="15" placeholder="Até 15 caracteres"></label>
+        <label>Valor (R$) <input name="amount" inputmode="decimal" placeholder="Opcional, ex.: 10,50"></label>
+        <label>Identificador (txid) <input name="txid" maxlength="25" placeholder="Opcional"></label>
+        <label>Descrição <input name="description" placeholder="Opcional"></label>
+        <div class="actions"><button type="submit" class="primary" disabled>Gerar</button></div>
+      </form>
+      <div id="static-out" hidden>
+        <p id="static-error" class="error" hidden></p>
+        <div id="static-ok" hidden>
+          <label for="payload" class="label">Copia e cola</label>
+          <textarea id="payload" rows="3" readonly spellcheck="false"></textarea>
+          <div class="actions">
+            <button type="button" id="copy">Copiar</button>
+            <button type="button" id="inspect">Decodificar acima</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap muted small">
+    <p><a href="https://github.com/victorcondackdev/brpay">github.com/victorcondackdev/brpay</a> · Biblioteca Go sem dependências, licença MIT. Não é afiliada ao Banco Central nem à FEBRABAN; confirme com o seu PSP antes de usar em produção.</p>
+  </footer>
+
+  <script src="wasm_exec.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
