@@ -1,0 +1,21 @@
+# Binaries
+/bin/
+/brpay
+/cmd/brpay/brpay
+*.exe
+*.test
+
+# Test and coverage output
+*.out
+coverage.*
+/testdata/fuzz/
+**/testdata/fuzz/
+
+# Editors and OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# docs/brpay.wasm and docs/wasm_exec.js are committed on purpose: they are
+# what GitHub Pages serves.
